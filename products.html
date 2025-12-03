@@ -26,12 +26,8 @@
         <img src="images/badam.jpg">
         <h3>Badam (Almond)</h3>
         <p>₹1020 / kg</p>
-        <input type="number" min="0" value="0" class="qty">
-        <button class="btn add-btn" 
-            data-name="Almond"
-            data-price="1020">
-            Add to Cart
-        </button>
+        <input id="Almond-qty" type="number" min="0" value="0" class="qty">
+        <button class="btn add-btn" data-name="Almond" data-price="1020">Add to Cart</button>
     </div>
 
     <!-- Ghee -->
@@ -39,25 +35,17 @@
         <img src="images/ghee.jpg">
         <h3>Ghee</h3>
         <p>₹950 / liter</p>
-        <input type="number" min="0" value="0" class="qty">
-        <button class="btn add-btn" 
-            data-name="Ghee"
-            data-price="950">
-            Add to Cart
-        </button>
+        <input id="Ghee-qty" type="number" min="0" value="0" class="qty">
+        <button class="btn add-btn" data-name="Ghee" data-price="950">Add to Cart</button>
     </div>
 
-    <!-- Black raisins -->
+    <!-- Black Raisins -->
     <div class="product-card">
         <img src="images/blackraisins.jpg">
         <h3>Black Raisins</h3>
         <p>₹220 / 250g</p>
-        <input type="number" min="0" value="0" class="qty">
-        <button class="btn add-btn" 
-            data-name="Black Raisins"
-            data-price="220">
-            Add to Cart
-        </button>
+        <input id="Black Raisins-qty" type="number" min="0" value="0" class="qty">
+        <button class="btn add-btn" data-name="Black Raisins" data-price="220">Add to Cart</button>
     </div>
 
     <!-- Raisins -->
@@ -65,12 +53,8 @@
         <img src="images/raisins.jpg">
         <h3>Raisins</h3>
         <p>₹200 / 250g</p>
-        <input type="number" min="0" value="0" class="qty">
-        <button class="btn add-btn" 
-            data-name="Raisins"
-            data-price="200">
-            Add to Cart
-        </button>
+        <input id="Raisins-qty" type="number" min="0" value="0" class="qty">
+        <button class="btn add-btn" data-name="Raisins" data-price="200">Add to Cart</button>
     </div>
 
     <!-- Pista -->
@@ -78,12 +62,8 @@
         <img src="images/pista.jpg">
         <h3>Pista</h3>
         <p>₹350 / 250g</p>
-        <input type="number" min="0" value="0" class="qty">
-        <button class="btn add-btn" 
-            data-name="Pista"
-            data-price="350">
-            Add to Cart
-        </button>
+        <input id="Pista-qty" type="number" min="0" value="0" class="qty">
+        <button class="btn add-btn" data-name="Pista" data-price="350">Add to Cart</button>
     </div>
 
 </div>
@@ -100,38 +80,61 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Load cart only if exists
     let cart = JSON.parse(localStorage.getItem("currentCart")) || [];
 
-    function addToCart(name, price) {
-        const quantityInput = document.getElementById(name + "-qty");
-        let qty = parseInt(quantityInput.value);
+    const buttons = document.querySelectorAll(".add-btn");
+    const cartList = document.getElementById("cartList");
+    const cartTotal = document.getElementById("cartTotal");
 
-        if (qty <= 0) {
-            alert("Enter a valid quantity!");
-            return;
-        }
+    // Add product to cart
+    buttons.forEach(btn => {
+        btn.addEventListener("click", function () {
 
-        // Check item already in cart?
-        let existing = cart.find(item => item.name === name);
+            let name = this.dataset.name;
+            let price = parseInt(this.dataset.price);
+            let qty = parseInt(document.getElementById(name + "-qty").value);
 
-        if (existing) {
-            existing.quantity += qty;
-        } else {
-            cart.push({
-                name: name,
-                price: price,
-                quantity: qty
-            });
-        }
+            if (qty <= 0) {
+                alert("Enter a valid quantity!");
+                return;
+            }
 
-        alert(name + " added to cart!");
-        localStorage.setItem("currentCart", JSON.stringify(cart));
+            let existing = cart.find(item => item.name === name);
+
+            if (existing) {
+                existing.quantity += qty;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    quantity: qty
+                });
+            }
+
+            localStorage.setItem("currentCart", JSON.stringify(cart));
+            displayCart();
+            alert(name + " added to cart!");
+        });
+    });
+
+    // Display cart in summary
+    function displayCart() {
+        cartList.innerHTML = "";
+        let total = 0;
+
+        cart.forEach(item => {
+            let li = document.createElement("li");
+            li.textContent = `${item.name} — ${item.quantity} pcs`;
+            cartList.appendChild(li);
+            total += item.quantity * item.price;
+        });
+
+        cartTotal.textContent = total;
     }
 
+    displayCart();
 });
 </script>
-
 
 </body>
 </html>
