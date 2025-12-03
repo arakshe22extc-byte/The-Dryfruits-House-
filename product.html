@@ -110,19 +110,20 @@
 
     <!-- Script -->
     <script>
-        // Start with empty cart every page load
-        let cart = [];
+        // Initialize cart from localStorage or empty array
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         const addButtons = document.querySelectorAll('.add-to-cart');
         const cartItems = document.getElementById('cart-items');
         const cartTotal = document.getElementById('cart-total');
 
+        // Function to update cart display
         function updateCart() {
             cartItems.innerHTML = '';
             let total = 0;
 
             if(cart.length === 0){
-                cartTotal.textContent = 0;
+                cartTotal.textContent = 0; // Show 0 on page load
                 return;
             }
 
@@ -134,11 +135,13 @@
             });
 
             cartTotal.textContent = total;
+            localStorage.setItem('cart', JSON.stringify(cart));
         }
 
-        // Initial cart display (empty)
+        // Initial cart display
         updateCart();
 
+        // Add to cart button logic
         addButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const name = btn.dataset.name;
