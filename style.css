@@ -40,10 +40,37 @@ nav a:hover {
 
 /* Hero Section */
 .hero {
+    position: relative;
     text-align: center;
-    padding: 60px 20px;
+    padding: 80px 20px;
     background: url('images/hero-bg.jpg') no-repeat center/cover;
     color: #fff;
+}
+
+/* Overlay for readability */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* semi-transparent black overlay */
+    z-index: 0;
+}
+
+/* Make text appear above overlay */
+.hero h2,
+.hero p,
+.hero .highlights,
+.hero .btn {
+    position: relative;
+    z-index: 1;
+}
+
+/* Text shadow for extra visibility */
+.hero h2, .hero p {
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
 }
 
 .hero h2 {
@@ -56,6 +83,7 @@ nav a:hover {
     margin-bottom: 20px;
 }
 
+/* Highlighted bullet points */
 .hero .highlights {
     list-style: none;
     margin-bottom: 25px;
@@ -63,9 +91,14 @@ nav a:hover {
 
 .hero .highlights li {
     font-size: 1.1em;
-    margin: 5px 0;
+    margin: 5px 5px;
+    background-color: rgba(255,255,255,0.2); /* semi-transparent white */
+    padding: 5px 12px;
+    border-radius: 8px;
+    display: inline-block;
 }
 
+/* Hero button */
 .btn {
     background-color: #d49a6a;
     color: #fff;
@@ -74,6 +107,7 @@ nav a:hover {
     border-radius: 5px;
     transition: 0.3s;
     display: inline-block;
+    font-weight: bold;
 }
 
 .btn:hover {
