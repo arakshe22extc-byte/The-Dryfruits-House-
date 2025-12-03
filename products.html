@@ -17,34 +17,119 @@
     </header>
 
     <section class="products">
-        <h2>Our Popular Products</h2>
+        <h2>Our Products</h2>
         <div class="product-grid">
+            <!-- Almond -->
             <div class="product-card">
                 <img src="images/almond.jpg" alt="Almond">
                 <h3>Almond</h3>
                 <p>₹1020/kg</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Almond" data-price="1020">Add to Cart</button>
             </div>
+            <!-- Ghee -->
             <div class="product-card">
                 <img src="images/ghee.jpg" alt="Ghee">
                 <h3>Ghee</h3>
                 <p>₹950/liter</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Ghee" data-price="950">Add to Cart</button>
             </div>
+            <!-- Black Raisins -->
             <div class="product-card">
-                <img src="images/blackwalnut.jpg" alt="Black Walnut">
-                <h3>Black Walnut</h3>
-                <p>₹1200/kg</p>
+                <img src="images/black-raisins.jpg" alt="Black Raisins">
+                <h3>Black Raisins</h3>
+                <p>₹220/pav kilo</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Black Raisins" data-price="220">Add to Cart</button>
             </div>
+            <!-- Raisins -->
             <div class="product-card">
-                <img src="images/pista.jpg" alt="Pista">
-                <h3>Pista</h3>
-                <p>₹1600/kg</p>
+                <img src="images/raisins.jpg" alt="Raisins">
+                <h3>Raisins</h3>
+                <p>₹200/pav kilo</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Raisins" data-price="200">Add to Cart</button>
+            </div>
+            <!-- Pistachios -->
+            <div class="product-card">
+                <img src="images/pistachios.jpg" alt="Pistachios">
+                <h3>Pistachios</h3>
+                <p>₹1400/kg | ₹350/250g</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Pistachios" data-price="1400">Add to Cart</button>
+            </div>
+            <!-- Dates -->
+            <div class="product-card">
+                <img src="images/dates.jpg" alt="Dates">
+                <h3>Dates</h3>
+                <p>₹300/half kg</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Dates" data-price="300">Add to Cart</button>
+            </div>
+            <!-- Dried Kiwi -->
+            <div class="product-card">
+                <img src="images/dried-kiwi.jpg" alt="Dried Kiwi">
+                <h3>Dried Kiwi</h3>
+                <p>₹120/100g</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Dried Kiwi" data-price="120">Add to Cart</button>
+            </div>
+            <!-- Walnuts -->
+            <div class="product-card">
+                <img src="images/walnuts.jpg" alt="Walnuts">
+                <h3>Walnuts</h3>
+                <p>₹250/100g</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Walnuts" data-price="250">Add to Cart</button>
             </div>
         </div>
-        <a href="order.html" class="btn">Place an Order</a>
+
+        <div class="cart-summary">
+            <h3>Cart:</h3>
+            <ul id="cart-items"></ul>
+            <p>Total: ₹<span id="cart-total">0</span></p>
+            <a href="order.html" class="btn">Place Your Order</a>
+        </div>
     </section>
 
     <footer>
         <p>&copy; 2025 The DryFruits House. All Rights Reserved.</p>
     </footer>
+
+    <script>
+        const cart = [];
+        const addButtons = document.querySelectorAll('.add-to-cart');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+
+        addButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const name = btn.dataset.name;
+                const price = parseInt(btn.dataset.price);
+                const quantity = parseInt(btn.previousElementSibling.value);
+
+                const existing = cart.find(item => item.name === name);
+                if(existing) existing.quantity += quantity;
+                else cart.push({name, price, quantity});
+
+                updateCart();
+            });
+        });
+
+        function updateCart() {
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`;
+                cartItems.appendChild(li);
+                total += item.price * item.quantity;
+            });
+            cartTotal.textContent = total;
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+    </script>
 </body>
 </html>
