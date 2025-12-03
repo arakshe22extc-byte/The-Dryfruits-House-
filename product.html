@@ -110,10 +110,31 @@
 
     <!-- Cart Script -->
     <script>
-        const cart = [];
+        // Load existing cart from localStorage or start empty
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
         const addButtons = document.querySelectorAll('.add-to-cart');
         const cartItems = document.getElementById('cart-items');
         const cartTotal = document.getElementById('cart-total');
+
+        // Update cart display
+        function updateCart() {
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`;
+                cartItems.appendChild(li);
+                total += item.price * item.quantity;
+            });
+
+            cartTotal.textContent = total;
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Initial display (cart empty on first load)
+        updateCart();
 
         addButtons.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -121,27 +142,18 @@
                 const price = parseInt(btn.dataset.price);
                 const quantity = parseInt(btn.previousElementSibling.value);
 
+                // Check if product already exists
                 const existing = cart.find(item => item.name === name);
-                if(existing) existing.quantity += quantity;
-                else cart.push({name, price, quantity});
+                if(existing) {
+                    existing.quantity += quantity;
+                } else {
+                    cart.push({name, price, quantity});
+                }
 
                 updateCart();
+                alert(`${name} added to cart!`);
             });
         });
-
-        function updateCart() {
-            cartItems.innerHTML = '';
-            let total = 0;
-            cart.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`;
-                cartItems.appendChild(li);
-                total += item.price * item.quantity;
-            });
-            cartTotal.textContent = total;
-
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
     </script>
 </body>
 </html>
