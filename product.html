@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - The DryFruits House</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>The DryFruits House</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="order.html">Order</a>
+        </nav>
+    </header>
+
+    <section class="products">
+        <h2>Our Products</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="images/almond.jpg" alt="Almond">
+                <h3>Almond</h3>
+                <p>₹1020/kg</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Almond" data-price="1020">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="images/ghee.jpg" alt="Ghee">
+                <h3>Ghee</h3>
+                <p>₹950/liter</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Ghee" data-price="950">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="images/blackwalnut.jpg" alt="Black Walnut">
+                <h3>Black Walnut</h3>
+                <p>₹1200/kg</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Black Walnut" data-price="1200">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="images/pista.jpg" alt="Pista">
+                <h3>Pista</h3>
+                <p>₹1600/kg</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart" data-name="Pista" data-price="1600">Add to Cart</button>
+            </div>
+        </div>
+        <div class="cart-summary">
+            <h3>Cart:</h3>
+            <ul id="cart-items"></ul>
+            <p>Total: ₹<span id="cart-total">0</span></p>
+            <a href="order.html" class="btn">Place Your Order</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 The DryFruits House. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const cart = [];
+        const addButtons = document.querySelectorAll('.add-to-cart');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+
+        addButtons.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                const name = btn.dataset.name;
+                const price = parseInt(btn.dataset.price);
+                const quantity = parseInt(btn.previousElementSibling.value);
+                
+                const existing = cart.find(item => item.name === name);
+                if(existing) existing.quantity += quantity;
+                else cart.push({name, price, quantity});
+                
+                updateCart();
+            });
+        });
+
+        function updateCart() {
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`;
+                cartItems.appendChild(li);
+                total += item.price * item.quantity;
+            });
+            cartTotal.textContent = total;
+
+            // Save cart in localStorage to use in order page
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+    </script>
+</body>
+</html>
