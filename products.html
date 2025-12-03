@@ -26,8 +26,8 @@
         <img src="images/badam.jpg">
         <h3>Almond</h3>
         <p>₹1020 / kg</p>
-        <input id="Almond" type="number" min="1" value="1">
-        <button class="add" data-name="Almond" data-price="1020">Add to Cart</button>
+        <input type="number" min="0" value="0" class="qty almond">
+        <button class="btn" onclick="addToCart('Almond',1020,'almond')">Add to Cart</button>
     </div>
 
     <!-- Ghee -->
@@ -35,8 +35,8 @@
         <img src="images/ghee.jpg">
         <h3>Ghee</h3>
         <p>₹950 / liter</p>
-        <input id="Ghee" type="number" min="1" value="1">
-        <button class="add" data-name="Ghee" data-price="950">Add to Cart</button>
+        <input type="number" min="0" value="0" class="qty ghee">
+        <button class="btn" onclick="addToCart('Ghee',950,'ghee')">Add to Cart</button>
     </div>
 
     <!-- Black Raisins -->
@@ -44,8 +44,8 @@
         <img src="images/blackraisins.jpg">
         <h3>Black Raisins</h3>
         <p>₹220 / 250g</p>
-        <input id="Black Raisins" type="number" min="1" value="1">
-        <button class="add" data-name="Black Raisins" data-price="220">Add to Cart</button>
+        <input type="number" min="0" value="0" class="qty blackraisins">
+        <button class="btn" onclick="addToCart('Black Raisins',220,'blackraisins')">Add to Cart</button>
     </div>
 
     <!-- Raisins -->
@@ -53,8 +53,8 @@
         <img src="images/raisins.jpg">
         <h3>Raisins</h3>
         <p>₹200 / 250g</p>
-        <input id="Raisins" type="number" min="1" value="1">
-        <button class="add" data-name="Raisins" data-price="200">Add to Cart</button>
+        <input type="number" min="0" value="0" class="qty raisins">
+        <button class="btn" onclick="addToCart('Raisins',200,'raisins')">Add to Cart</button>
     </div>
 
     <!-- Pista -->
@@ -62,8 +62,8 @@
         <img src="images/pista.jpg">
         <h3>Pista</h3>
         <p>₹350 / 250g</p>
-        <input id="Pista" type="number" min="1" value="1">
-        <button class="add" data-name="Pista" data-price="350">Add to Cart</button>
+        <input type="number" min="0" value="0" class="qty pista">
+        <button class="btn" onclick="addToCart('Pista',350,'pista')">Add to Cart</button>
     </div>
 
 </div>
@@ -72,58 +72,60 @@
 <h3>Cart Summary</h3>
 <ul id="cartList"></ul>
 <p><strong>Total: ₹<span id="cartTotal">0</span></strong></p>
-<a href="order.html" class="btn">Proceed to Order</a>
+<a href="order.html" class="btn" onclick="saveCart()">Proceed to Order</a>
 </div>
 
 </section>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
 
-    let cart = JSON.parse(localStorage.getItem("currentCart")) || [];
+let cart = [];  // Always start empty
 
-    const cartList = document.getElementById("cartList");
-    const cartTotal = document.getElementById("cartTotal");
-    const buttons = document.querySelectorAll(".add");
+function addToCart(name, price, className) {
+    let qty = parseInt(document.querySelector("." + className).value);
 
-    function updateCart() {
-        cartList.innerHTML = "";
-        let total = 0;
-
-        cart.forEach(item => {
-            let li = document.createElement("li");
-            li.textContent = `${item.name} — ${item.quantity} x ₹${item.price}`;
-            cartList.appendChild(li);
-
-            total += item.quantity * item.price;
-        });
-
-        cartTotal.textContent = total;
-        localStorage.setItem("currentCart", JSON.stringify(cart));
+    if (qty <= 0) {
+        alert("Please enter a valid quantity.");
+        return;
     }
 
-    buttons.forEach(btn => {
-        btn.addEventListener("click", function () {
-            let name = this.dataset.name;
-            let price = parseInt(this.dataset.price);
-            let qty = parseInt(document.getElementById(name).value);
+    // Check if product already in cart
+    let item = cart.find(p => p.name === name);
 
-            let existing = cart.find(item => item.name === name);
-
-            if (existing) {
-                existing.quantity += qty;
-            } else {
-                cart.push({ name, price, quantity: qty });
-            }
-
-            updateCart();
-            alert(name + " added!");
+    if (item) {
+        item.quantity += qty;
+    } else {
+        cart.push({
+            name: name,
+            price: price,
+            quantity: qty
         });
-    });
+    }
 
     updateCart();
+}
 
-});
+function updateCart() {
+    const list = document.getElementById("cartList");
+    const totalSpan = document.getElementById("cartTotal");
+    list.innerHTML = "";
+    let total = 0;
+
+    cart.forEach(item => {
+        let li = document.createElement("li");
+        let subtotal = item.price * item.quantity;
+        li.textContent = `${item.name} - ${item.quantity} x ₹${item.price} = ₹${subtotal}`;
+        list.appendChild(li);
+        total += subtotal;
+    });
+
+    totalSpan.textContent = total;
+}
+
+function saveCart() {
+    localStorage.setItem("currentCart", JSON.stringify(cart));
+}
+
 </script>
 
 </body>
