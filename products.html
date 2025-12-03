@@ -24,10 +24,10 @@
     <!-- Almond -->
     <div class="product-card">
         <img src="images/badam.jpg">
-        <h3>Almond</h3>
+        <h3>Badam (Almond)</h3>
         <p>₹1020 / kg</p>
         <input type="number" min="0" value="0" class="qty almond">
-        <button class="btn" onclick="addToCart('Almond',1020,'almond')">Add to Cart</button>
+        <button class="btn" onclick="addToCart('Badam (Almond)',1020,'almond')">Add to Cart</button>
     </div>
 
     <!-- Ghee -->
@@ -42,7 +42,7 @@
     <!-- Black Raisins -->
     <div class="product-card">
         <img src="images/blackraisins.jpg">
-        <h3>Black Raisins</h3>
+        <h3>Black Raisins (Kali Manuka)</h3>
         <p>₹220 / 250g</p>
         <input type="number" min="0" value="0" class="qty blackraisins">
         <button class="btn" onclick="addToCart('Black Raisins',220,'blackraisins')">Add to Cart</button>
@@ -51,7 +51,7 @@
     <!-- Raisins -->
     <div class="product-card">
         <img src="images/raisins.jpg">
-        <h3>Raisins</h3>
+        <h3>Bedaane (Raisins)</h3>
         <p>₹200 / 250g</p>
         <input type="number" min="0" value="0" class="qty raisins">
         <button class="btn" onclick="addToCart('Raisins',200,'raisins')">Add to Cart</button>
@@ -60,10 +60,37 @@
     <!-- Pista -->
     <div class="product-card">
         <img src="images/pista.jpg">
-        <h3>Pista</h3>
-        <p>₹350 / 250g</p>
+        <h3>Pista (Pistachios)</h3>
+        <p>₹1400 / kg • ₹350 / 250g</p>
         <input type="number" min="0" value="0" class="qty pista">
-        <button class="btn" onclick="addToCart('Pista',350,'pista')">Add to Cart</button>
+        <button class="btn" onclick="addToCart('Pista 250g',350,'pista')">Add to Cart</button>
+    </div>
+
+    <!-- Dates -->
+    <div class="product-card">
+        <img src="images/dates.jpg">
+        <h3>Khajoor (Dates)</h3>
+        <p>₹300 / 500g</p>
+        <input type="number" min="0" value="0" class="qty dates">
+        <button class="btn" onclick="addToCart('Dates 500g',300,'dates')">Add to Cart</button>
+    </div>
+
+    <!-- Kiwi -->
+    <div class="product-card">
+        <img src="images/kiwi.jpg">
+        <h3>Dried Kiwi</h3>
+        <p>₹120 / 100g</p>
+        <input type="number" min="0" value="0" class="qty kiwi">
+        <button class="btn" onclick="addToCart('Dried Kiwi',120,'kiwi')">Add to Cart</button>
+    </div>
+
+    <!-- Walnuts -->
+    <div class="product-card">
+        <img src="images/walnut.jpg">
+        <h3>Walnuts (Akhrot)</h3>
+        <p>₹250 / 100g</p>
+        <input type="number" min="0" value="0" class="qty walnuts">
+        <button class="btn" onclick="addToCart('Walnuts 100g',250,'walnuts')">Add to Cart</button>
     </div>
 
 </div>
@@ -79,7 +106,7 @@
 
 <script>
 
-let cart = [];  // Always start empty
+let cart = []; // ALWAYS empty start
 
 function addToCart(name, price, className) {
     let qty = parseInt(document.querySelector("." + className).value);
@@ -89,11 +116,10 @@ function addToCart(name, price, className) {
         return;
     }
 
-    // Check if product already in cart
-    let item = cart.find(p => p.name === name);
+    let product = cart.find(p => p.name === name);
 
-    if (item) {
-        item.quantity += qty;
+    if (product) {
+        product.quantity += qty;
     } else {
         cart.push({
             name: name,
