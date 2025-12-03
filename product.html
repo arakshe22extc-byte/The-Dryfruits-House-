@@ -26,7 +26,7 @@
                 <img src="images/almond.jpg" alt="Almond">
                 <h3>Almond</h3>
                 <p>₹1020/kg</p>
-                <input type="number" min="1" value="1" class="quantity">
+                <input type="number" min="0" value="0" class="quantity">
                 <button class="add-to-cart" data-name="Almond" data-price="1020">Add to Cart</button>
             </div>
 
@@ -35,7 +35,7 @@
                 <img src="images/ghee.jpg" alt="Ghee">
                 <h3>Ghee</h3>
                 <p>₹950/liter</p>
-                <input type="number" min="1" value="1" class="quantity">
+                <input type="number" min="0" value="0" class="quantity">
                 <button class="add-to-cart" data-name="Ghee" data-price="950">Add to Cart</button>
             </div>
 
@@ -44,7 +44,7 @@
                 <img src="images/black-raisins.jpg" alt="Black Raisins">
                 <h3>Black Raisins</h3>
                 <p>₹220/pav kilo</p>
-                <input type="number" min="1" value="1" class="quantity">
+                <input type="number" min="0" value="0" class="quantity">
                 <button class="add-to-cart" data-name="Black Raisins" data-price="220">Add to Cart</button>
             </div>
 
@@ -53,7 +53,7 @@
                 <img src="images/raisins.jpg" alt="Raisins">
                 <h3>Raisins</h3>
                 <p>₹200/pav kilo</p>
-                <input type="number" min="1" value="1" class="quantity">
+                <input type="number" min="0" value="0" class="quantity">
                 <button class="add-to-cart" data-name="Raisins" data-price="200">Add to Cart</button>
             </div>
 
@@ -62,7 +62,7 @@
                 <img src="images/pistachios.jpg" alt="Pistachios">
                 <h3>Pistachios</h3>
                 <p>₹1400/kg | ₹350/250g</p>
-                <input type="number" min="1" value="1" class="quantity">
+                <input type="number" min="0" value="0" class="quantity">
                 <button class="add-to-cart" data-name="Pistachios" data-price="1400">Add to Cart</button>
             </div>
 
@@ -71,7 +71,7 @@
                 <img src="images/dates.jpg" alt="Dates">
                 <h3>Dates</h3>
                 <p>₹300/half kg</p>
-                <input type="number" min="1" value="1" class="quantity">
+                <input type="number" min="0" value="0" class="quantity">
                 <button class="add-to-cart" data-name="Dates" data-price="300">Add to Cart</button>
             </div>
 
@@ -80,7 +80,7 @@
                 <img src="images/dried-kiwi.jpg" alt="Dried Kiwi">
                 <h3>Dried Kiwi</h3>
                 <p>₹120/100g</p>
-                <input type="number" min="1" value="1" class="quantity">
+                <input type="number" min="0" value="0" class="quantity">
                 <button class="add-to-cart" data-name="Dried Kiwi" data-price="120">Add to Cart</button>
             </div>
 
@@ -89,7 +89,7 @@
                 <img src="images/walnuts.jpg" alt="Walnuts">
                 <h3>Walnuts</h3>
                 <p>₹250/100g</p>
-                <input type="number" min="1" value="1" class="quantity">
+                <input type="number" min="0" value="0" class="quantity">
                 <button class="add-to-cart" data-name="Walnuts" data-price="250">Add to Cart</button>
             </div>
         </div>
@@ -141,6 +141,11 @@
                 const name = btn.dataset.name;
                 const price = parseInt(btn.dataset.price);
                 const quantity = parseInt(btn.previousElementSibling.value);
+
+                if(quantity <= 0) {
+                    alert("Please select quantity before adding to cart!");
+                    return;
+                }
 
                 // Check if product already exists
                 const existing = cart.find(item => item.name === name);
