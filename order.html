@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order - The DryFruits House</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>The DryFruits House</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="order.html">Order</a>
+        </nav>
+    </header>
+
+    <section class="order">
+        <h2>Place Your Order</h2>
+        <ul id="order-cart"></ul>
+        <p>Total: ₹<span id="order-total">0</span></p>
+
+        <form id="order-form" action="https://formsubmit.co/your-email@example.com" method="POST">
+            <input type="hidden" name="_subject" value="New Dry Fruits Order">
+            <input type="hidden" name="_captcha" value="false">
+
+            <label for="name">Name:</label>
+            <input type="text" name="Name" id="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="Email" id="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="text" name="Phone" id="phone" required>
+
+            <label for="address">Address:</label>
+            <textarea name="Address" id="address" required></textarea>
+
+            <label for="payment">Payment Method:</label>
+            <select name="Payment" id="payment">
+                <option>Cash on Delivery</option>
+                <option>UPI</option>
+                <option>Net Banking</option>
+            </select>
+
+            <input type="hidden" name="Cart Details" id="cart-details">
+
+            <button type="submit" class="btn">Submit Order</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 The DryFruits House. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Load cart from localStorage
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const orderCart = document.getElementById('order-cart');
+        const orderTotal = document.getElementById('order-total');
+        const cartDetails = document.getElementById('cart-details');
+
+        let total = 0;
+        cart.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`;
+            orderCart.appendChild(li);
+            total += item.price * item.quantity;
+        });
+        orderTotal.textContent = total;
+        cartDetails.value = cart.map(i => `${i.name} x ${i.quantity} = ₹${i.price*i.quantity}`).join(', ');
+    </script>
+</body>
+</html>
