@@ -5,6 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Place Order - The DryFruits House</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Inline CSS for order page layout */
+        .order-section {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 15px;
+        }
+        .order-section h2 {
+            text-align: center;
+            color: #5a2a00;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f3e6d9;
+            color: #5a2a00;
+        }
+        .total-row td {
+            font-weight: bold;
+            font-size: 18px;
+            background-color: #fdf0e0;
+        }
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        form input, form textarea, form select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #d18b1f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #b36d10;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -21,11 +80,26 @@
     <section class="order-section">
         <h2>Your Order</h2>
         
-        <!-- Cart Items -->
-        <div class="cart-summary">
-            <ul id="order-items"></ul>
-            <p>Total: ₹<span id="order-total">0</span></p>
-        </div>
+        <!-- Cart Items Table -->
+        <table id="order-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price (₹)</th>
+                    <th>Subtotal (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="order-items">
+                <!-- Dynamic cart items here -->
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="3">Total Amount</td>
+                    <td id="order-total">0</td>
+                </tr>
+            </tfoot>
+        </table>
 
         <!-- User Details Form -->
         <form id="order-form">
@@ -64,19 +138,24 @@
         const orderItems = document.getElementById('order-items');
         const orderTotal = document.getElementById('order-total');
 
-        // Display cart items
         function displayOrder() {
             orderItems.innerHTML = '';
             let total = 0;
 
             if(cart.length === 0){
-                orderItems.innerHTML = '<li>Your cart is empty!</li>';
+                orderItems.innerHTML = '<tr><td colspan="4">Your cart is empty!</td></tr>';
             } else {
                 cart.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`;
-                    orderItems.appendChild(li);
-                    total += item.price * item.quantity;
+                    const tr = document.createElement('tr');
+                    const subtotal = item.price * item.quantity;
+                    tr.innerHTML = `
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.price}</td>
+                        <td>${subtotal}</td>
+                    `;
+                    orderItems.appendChild(tr);
+                    total += subtotal;
                 });
             }
 
@@ -99,3 +178,24 @@
             const contact = document.getElementById('contact').value;
             const address = document.getElementById('address').value;
             const payment = document.getElementById('payment').value;
+
+            let orderDetails = `New Order from ${name}\nContact: ${contact}\nAddress: ${address}\nPayment: ${payment}\n\nProducts:\n`;
+
+            cart.forEach(item => {
+                orderDetails += `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}\n`;
+            });
+
+            orderDetails += `\nTotal Amount: ₹${orderTotal.textContent}`;
+
+            // Open email client
+            window.location.href = `mailto:yourmail@example.com?subject=New Order&body=${encodeURIComponent(orderDetails)}`;
+
+            // Clear cart after order
+            localStorage.removeItem('cart');
+            alert("Order placed! Please check your email client to send the order.");
+            displayOrder();
+            orderForm.reset();
+        });
+    </script>
+</body>
+</html>
