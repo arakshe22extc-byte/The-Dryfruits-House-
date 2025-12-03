@@ -1,203 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Place Order - The DryFruits House</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .order-section {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 15px;
-        }
-        .order-section h2 {
-            text-align: center;
-            color: #5a2a00;
-            margin-bottom: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-        }
-        th {
-            background-color: #f3e6d9;
-            color: #5a2a00;
-        }
-        .total-row td {
-            font-weight: bold;
-            font-size: 18px;
-            background-color: #fdf0e0;
-        }
-        form label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-        }
-        form input, form textarea, form select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
-        .btn {
-            display: inline-block;
-            background-color: #d18b1f;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            text-align: center;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #b36d10;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Place Order - The DryFruits House</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.order-section { max-width: 900px; margin:20px auto; padding:15px; }
+.order-section h2 { text-align:center; color:#5a2a00; margin-bottom:20px; }
+table { width:100%; border-collapse:collapse; margin-bottom:20px; }
+th, td { border:1px solid #ccc; padding:10px; text-align:center; }
+th { background-color:#f3e6d9; color:#5a2a00; }
+.total-row td { font-weight:bold; font-size:18px; background-color:#fdf0e0; }
+form label { display:block; margin:10px 0 5px; font-weight:bold; }
+form input, form textarea, form select { width:100%; padding:8px; margin-bottom:15px; border-radius:5px; border:1px solid #ccc; font-size:14px; }
+.btn { display:inline-block; background-color:#d18b1f; color:white; padding:10px 20px; border-radius:8px; text-decoration:none; font-weight:bold; cursor:pointer; }
+.btn:hover { background-color:#b36d10; }
+</style>
 </head>
 <body>
-    <header>
-        <h1>The DryFruits House</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="products.html">Products</a>
-            <a href="order.html">Order</a>
-        </nav>
-    </header>
+<header>
+<h1>The DryFruits House</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="products.html">Products</a>
+<a href="order.html">Order</a>
+</nav>
+</header>
 
-    <section class="order-section">
-        <h2>Your Order</h2>
+<section class="order-section">
+<h2>Your Order</h2>
 
-        <!-- Cart Items Table -->
-        <table id="order-table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price (₹)</th>
-                    <th>Subtotal (₹)</th>
-                </tr>
-            </thead>
-            <tbody id="order-items">
-                <!-- Dynamic cart items appear here -->
-            </tbody>
-            <tfoot>
-                <tr class="total-row">
-                    <td colspan="3">Total Amount</td>
-                    <td id="order-total">0</td>
-                </tr>
-            </tfoot>
-        </table>
+<table id="order-table">
+<thead>
+<tr><th>Product</th><th>Quantity</th><th>Price (₹)</th><th>Subtotal (₹)</th></tr>
+</thead>
+<tbody id="order-items"></tbody>
+<tfoot>
+<tr class="total-row"><td colspan="3">Total Amount</td><td id="order-total">0</td></tr>
+</tfoot>
+</table>
 
-        <!-- User Details Form -->
-        <form id="order-form">
-            <h3>Enter Your Details</h3>
-            <label for="name">Name:</label>
-            <input type="text" id="name" required>
+<form id="order-form">
+<h3>Enter Your Details</h3>
+<label for="name">Name:</label>
+<input type="text" id="name" required>
+<label for="contact">Contact Number:</label>
+<input type="tel" id="contact" required>
+<label for="address">Address:</label>
+<textarea id="address" rows="3" required></textarea>
+<label for="payment">Payment Method:</label>
+<select id="payment" required>
+<option value="">--Select--</option>
+<option value="COD">Cash on Delivery</option>
+<option value="UPI">UPI</option>
+<option value="Card">Card Payment</option>
+</select>
+<button type="submit" class="btn">Place Order</button>
+</form>
+</section>
 
-            <label for="contact">Contact Number:</label>
-            <input type="tel" id="contact" required>
+<footer>
+<p>&copy; 2025 The DryFruits House. All Rights Reserved. | Contact: +91 98765 43210</p>
+</footer>
 
-            <label for="address">Address:</label>
-            <textarea id="address" rows="3" required></textarea>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const orderItems = document.getElementById('order-items');
+    const orderTotal = document.getElementById('order-total');
+    const orderForm = document.getElementById('order-form');
 
-            <label for="payment">Payment Method:</label>
-            <select id="payment" required>
-                <option value="">--Select--</option>
-                <option value="COD">Cash on Delivery</option>
-                <option value="UPI">UPI</option>
-                <option value="Card">Card Payment</option>
-            </select>
+    // Start empty cart
+    let cart = [];
+    const savedCart = JSON.parse(localStorage.getItem('currentCart')) || [];
+    if(savedCart.length > 0){
+        savedCart.forEach(item => cart.push(item));
+        localStorage.removeItem('currentCart'); // clear temp cart
+    }
 
-            <button type="submit" class="btn">Place Order</button>
-        </form>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 The DryFruits House. All Rights Reserved. | Contact: +91 98765 43210</p>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fetch cart from localStorage only if user comes from 2nd page
-            const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-            let cart = [];
-
-            const orderItems = document.getElementById('order-items');
-            const orderTotal = document.getElementById('order-total');
-            const orderForm = document.getElementById('order-form');
-
-            function displayOrder() {
-                orderItems.innerHTML = '';
-                let total = 0;
-
-                if(cart.length === 0){
-                    orderItems.innerHTML = '<tr><td colspan="4">Your cart is empty!</td></tr>';
-                } else {
-                    cart.forEach(item => {
-                        const tr = document.createElement('tr');
-                        const subtotal = item.price * item.quantity;
-                        tr.innerHTML = `
-                            <td>${item.name}</td>
-                            <td>${item.quantity}</td>
-                            <td>${item.price}</td>
-                            <td>${subtotal}</td>
-                        `;
-                        orderItems.appendChild(tr);
-                        total += subtotal;
-                    });
-                }
-
-                orderTotal.textContent = total;
-            }
-
-            // Only fill cart if savedCart has items
-            if(savedCart.length > 0){
-                cart = savedCart;
-            }
-
-            displayOrder();
-
-            // Handle order submission
-            orderForm.addEventListener('submit', function(e){
-                e.preventDefault();
-
-                if(cart.length === 0){
-                    alert("Your cart is empty! Add products first.");
-                    return;
-                }
-
-                const name = document.getElementById('name').value;
-                const contact = document.getElementById('contact').value;
-                const address = document.getElementById('address').value;
-                const payment = document.getElementById('payment').value;
-
-                let orderDetails = `New Order from ${name}\nContact: ${contact}\nAddress: ${address}\nPayment: ${payment}\n\nProducts:\n`;
-
-                cart.forEach(item => {
-                    orderDetails += `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}\n`;
-                });
-
-                orderDetails += `\nTotal Amount: ₹${orderTotal.textContent}`;
-
-                window.location.href = `mailto:yourmail@example.com?subject=New Order&body=${encodeURIComponent(orderDetails)}`;
-
-                // Clear cart after order
-                localStorage.removeItem('cart');
-                alert("Order placed! Please check your email client to send the order.");
-                displayOrder();
-                orderForm.reset();
+    function displayOrder() {
+        orderItems.innerHTML = '';
+        let total = 0;
+        if(cart.length === 0){
+            orderItems.innerHTML = '<tr><td colspan="4">Your cart is empty!</td></tr>';
+        } else {
+            cart.forEach(item => {
+                const tr = document.createElement('tr');
+                const subtotal = item.price * item.quantity;
+                tr.innerHTML = `<td>${item.name}</td><td>${item.quantity}</td><td>${item.price}</td><td>${subtotal}</td>`;
+                orderItems.appendChild(tr);
+                total += subtotal;
             });
-        });
-    </script>
+        }
+        orderTotal.textContent = total;
+    }
+
+    displayOrder();
+
+    orderForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(cart.length === 0){ alert("Cart empty!"); return; }
+        const name = document.getElementById('name').value;
+        const contact = document.getElementById('contact').value;
+        const address = document.getElementById('address').value;
+        const payment = document.getElementById('payment').value;
+
+        let orderDetails = `New Order from ${name}\nContact: ${contact}\nAddress: ${address}\nPayment: ${payment}\n\nProducts:\n`;
+        cart.forEach(item => { orderDetails += `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}\n`; });
+        orderDetails += `\nTotal Amount: ₹${orderTotal.textContent}`;
+
+        window.location.href = `mailto:yourmail@example.com?subject=New Order&body=${encodeURIComponent(orderDetails)}`;
+
+        cart = [];
+        displayOrder();
+        orderForm.reset();
+    });
+});
+</script>
 </body>
 </html>
