@@ -1,157 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Products - The DryFruits House</title>
-<link rel="stylesheet" href="style.css">
+    <title>Products - The Dryfruits House</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .product { border:1px solid #ccc; padding:15px; margin:10px 0; border-radius:8px; }
+        button { padding:6px 12px; margin:5px; }
+    </style>
 </head>
+
 <body>
 
-<header>
-<h1>The DryFruits House</h1>
-<nav>
-<a href="index.html">Home</a>
-<a href="products.html">Products</a>
-<a href="order.html">Order</a>
-</nav>
-</header>
+<h2>The Dryfruits House – Products</h2>
 
-<section class="products">
-<h2>Our Products</h2>
+<div id="product-list"></div>
 
-<div class="product-grid">
-
-    <!-- Almond -->
-    <div class="product-card">
-        <img src="images/badam.jpg">
-        <h3>Badam (Almond)</h3>
-        <p>₹1020 / kg</p>
-        <input type="number" min="0" value="0" class="qty almond">
-        <button class="btn" onclick="addToCart('Badam (Almond)',1020,'almond')">Add to Cart</button>
-    </div>
-
-    <!-- Ghee -->
-    <div class="product-card">
-        <img src="images/ghee.jpg">
-        <h3>Ghee</h3>
-        <p>₹950 / liter</p>
-        <input type="number" min="0" value="0" class="qty ghee">
-        <button class="btn" onclick="addToCart('Ghee',950,'ghee')">Add to Cart</button>
-    </div>
-
-    <!-- Black Raisins -->
-    <div class="product-card">
-        <img src="images/blackraisins.jpg">
-        <h3>Black Raisins (Kali Manuka)</h3>
-        <p>₹220 / 250g</p>
-        <input type="number" min="0" value="0" class="qty blackraisins">
-        <button class="btn" onclick="addToCart('Black Raisins',220,'blackraisins')">Add to Cart</button>
-    </div>
-
-    <!-- Raisins -->
-    <div class="product-card">
-        <img src="images/raisins.jpg">
-        <h3>Bedaane (Raisins)</h3>
-        <p>₹200 / 250g</p>
-        <input type="number" min="0" value="0" class="qty raisins">
-        <button class="btn" onclick="addToCart('Raisins',200,'raisins')">Add to Cart</button>
-    </div>
-
-    <!-- Pista -->
-    <div class="product-card">
-        <img src="images/pista.jpg">
-        <h3>Pista (Pistachios)</h3>
-        <p>₹1400 / kg • ₹350 / 250g</p>
-        <input type="number" min="0" value="0" class="qty pista">
-        <button class="btn" onclick="addToCart('Pista 250g',350,'pista')">Add to Cart</button>
-    </div>
-
-    <!-- Dates -->
-    <div class="product-card">
-        <img src="images/dates.jpg">
-        <h3>Khajoor (Dates)</h3>
-        <p>₹300 / 500g</p>
-        <input type="number" min="0" value="0" class="qty dates">
-        <button class="btn" onclick="addToCart('Dates 500g',300,'dates')">Add to Cart</button>
-    </div>
-
-    <!-- Kiwi -->
-    <div class="product-card">
-        <img src="images/kiwi.jpg">
-        <h3>Dried Kiwi</h3>
-        <p>₹120 / 100g</p>
-        <input type="number" min="0" value="0" class="qty kiwi">
-        <button class="btn" onclick="addToCart('Dried Kiwi',120,'kiwi')">Add to Cart</button>
-    </div>
-
-    <!-- Walnuts -->
-    <div class="product-card">
-        <img src="images/walnut.jpg">
-        <h3>Walnuts (Akhrot)</h3>
-        <p>₹250 / 100g</p>
-        <input type="number" min="0" value="0" class="qty walnuts">
-        <button class="btn" onclick="addToCart('Walnuts 100g',250,'walnuts')">Add to Cart</button>
-    </div>
-
-</div>
-
-<div class="cart-summary">
-<h3>Cart Summary</h3>
-<ul id="cartList"></ul>
-<p><strong>Total: ₹<span id="cartTotal">0</span></strong></p>
-<a href="order.html" class="btn" onclick="saveCart()">Proceed to Order</a>
-</div>
-
-</section>
+<br><br>
+<button onclick="goToOrder()">Proceed To Order</button>
 
 <script>
+const products = [
+    { name: "Badam (Almond)", price: 1020, unit: "per kg" },
+    { name: "Ghee", price: 950, unit: "per litre" },
+    { name: "Kali Manuka (Black Raisins)", price: 220, unit: "per 250g" },
+    { name: "Bedane (Raisins)", price: 200, unit: "per 250g" },
+    { name: "Pista (250g)", price: 350, unit: "250g pack" },
+    { name: "Pista (1kg)", price: 1400, unit: "per kg" },
+    { name: "Khajoor (Dates)", price: 300, unit: "per 500g" },
+    { name: "Dried Kiwi", price: 120, unit: "per 100g" },
+    { name: "Akhrot (Walnuts)", price: 250, unit: "per 100g" }
+];
 
-let cart = []; // ALWAYS empty start
+let cart = [];
 
-function addToCart(name, price, className) {
-    let qty = parseInt(document.querySelector("." + className).value);
+function loadProducts() {
+    const list = document.getElementById("product-list");
+
+    products.forEach((p, index) => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+            <h3>${p.name}</h3>
+            <p>Price: ₹${p.price} (${p.unit})</p>
+            <label>Qty: </label>
+            <input type="number" id="qty${index}" value="0" min="0" style="width:60px;">
+            <br><br>
+            <button onclick="addToCart(${index})">Add to Cart</button>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function addToCart(i) {
+    const qty = parseInt(document.getElementById("qty" + i).value);
 
     if (qty <= 0) {
-        alert("Please enter a valid quantity.");
+        alert("Please add quantity");
         return;
     }
 
-    let product = cart.find(p => p.name === name);
-
-    if (product) {
-        product.quantity += qty;
-    } else {
-        cart.push({
-            name: name,
-            price: price,
-            quantity: qty
-        });
-    }
-
-    updateCart();
-}
-
-function updateCart() {
-    const list = document.getElementById("cartList");
-    const totalSpan = document.getElementById("cartTotal");
-    list.innerHTML = "";
-    let total = 0;
-
-    cart.forEach(item => {
-        let li = document.createElement("li");
-        let subtotal = item.price * item.quantity;
-        li.textContent = `${item.name} - ${item.quantity} x ₹${item.price} = ₹${subtotal}`;
-        list.appendChild(li);
-        total += subtotal;
+    cart.push({
+        name: products[i].name,
+        price: products[i].price,
+        quantity: qty
     });
 
-    totalSpan.textContent = total;
-}
-
-function saveCart() {
     localStorage.setItem("currentCart", JSON.stringify(cart));
+    alert("Added successfully!");
 }
 
+function goToOrder() {
+    window.location.href = "order.html";
+}
+
+loadProducts();
 </script>
 
 </body>
